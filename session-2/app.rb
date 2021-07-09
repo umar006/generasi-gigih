@@ -4,7 +4,6 @@ require_relative 'villain'
 require_relative 'mongol_archer'
 require_relative 'mongol_spearman'
 require_relative 'mongol_swordsman'
-require_relative 'heal'
 
 jin_sakai = Hero.new('Jin Sakai', 100, 50, 20, 0.8)
 
