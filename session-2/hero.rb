@@ -26,12 +26,12 @@ class Hero < Player
       allies.each_with_index do |ally, index|
         puts "#{index + 1}) #{ally.name}"
       end
-      ally_to_heal = gets.chomp.to_i
+      ally_to_heal = gets.chomp.to_i - 1
 
       case ally_to_heal
-      when 1
+      when 0
         hero.heal(allies[ally_to_heal]) unless allies[ally_to_heal].die?
-      when 2
+      when 1
         hero.heal(allies[ally_to_heal]) unless allies[ally_to_heal].die?
       end
     else
@@ -44,15 +44,15 @@ class Hero < Player
     villains.each_with_index do |villain, index|
       puts "#{index + 1}) #{villain.name}"
     end
-    enemy_to_attack = gets.chomp.to_i
+    enemy_to_attack = gets.chomp.to_i - 1
     puts
 
     case enemy_to_attack
+    when 0
+      hero.attack(villains[enemy_to_attack])
     when 1
       hero.attack(villains[enemy_to_attack])
     when 2
-      hero.attack(villains[enemy_to_attack])
-    when 3
       hero.attack(villains[enemy_to_attack])
     end
   end

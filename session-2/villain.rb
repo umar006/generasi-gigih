@@ -15,7 +15,7 @@ class Villain < Player
   end
 
   def flee
-    @fled = true
+    @flee = true
     puts "#{@name} has fled the battlefield with #{@hitpoint} hitpoint left"
   end
 

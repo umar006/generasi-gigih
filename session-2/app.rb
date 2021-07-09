@@ -41,19 +41,22 @@ until jin_sakai.die? || villains.empty? do
   case what_to_do
   when "1"
     Hero.attack(jin_sakai, villains)
+    villains.delete_if{|villain| villain.die? || villain.flee?}
   when "2"
     Hero.heal(jin_sakai, allies)
   end
-  allies.each{|ally| ally.attack(villains[rand(villains.size)])}
+
+  allies.each do |ally| 
+    ally.attack(villains[rand(villains.size)])
+    villains.delete_if{|villain| villain.die? || villain.flee?}
+  end
   puts
 
   villains.each do |villain|
     villain.attack(allies[rand(allies.size)])
+    allies.delete_if{|ally| ally.die?}
   end
   puts
-
-  villains.delete_if{|villain| villain.die? || villain.flee?}
-  allies.delete_if{|ally| ally.die?}
 
   i += 1
 end
