@@ -34,27 +34,29 @@ until jin_sakai.die? || villains.empty? do
 
   puts "As #{jin_sakai.name}, what do you want to do this turn?"
   puts "1) Attack an enemy"
-  puts "2) Heal an ally"
+  puts "2) Heal an ally" unless allies.empty?
   what_to_do = gets.chomp
   puts 
 
   case what_to_do
   when "1"
-    Hero.attack(jin_sakai, villains)
-    villains.delete_if{|villain| villain.die? || villain.flee?}
+    jin_sakai.choose_attack(villains)
+    villains.delete_if{ |villain| villain.die? || villain.flee? }
   when "2"
-    Hero.heal(jin_sakai, allies)
+    jin_sakai.choose_heal(allies)
   end
 
   allies.each do |ally| 
-    ally.attack(villains[rand(villains.size)])
-    villains.delete_if{|villain| villain.die? || villain.flee?}
+    ally.attack(villains[rand(villains.size)]) unless villains.empty?
+    villains.delete_if{ |villain| villain.die? || villain.flee? }
   end
   puts
 
   villains.each do |villain|
-    villain.attack(allies[rand(allies.size)])
-    allies.delete_if{|ally| ally.die?}
+    allies << jin_sakai
+    villain.attack(allies[rand(allies.size)]) unless allies.empty?
+    allies.pop
+    allies.delete_if{ |ally| ally.die? }
   end
   puts
 

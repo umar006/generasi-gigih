@@ -20,7 +20,7 @@ class Hero < Player
     ally.take_heal(@heal_point)
   end
 
-  def self.heal(hero, allies)
+  def choose_heal(allies)
     puts "Which ally you want to heal?"
     unless allies.empty?
       allies.each_with_index do |ally, index|
@@ -28,18 +28,13 @@ class Hero < Player
       end
       ally_to_heal = gets.chomp.to_i - 1
 
-      case ally_to_heal
-      when 0
-        hero.heal(allies[ally_to_heal]) unless allies[ally_to_heal].die?
-      when 1
-        hero.heal(allies[ally_to_heal]) unless allies[ally_to_heal].die?
-      end
+      self.heal(allies[ally_to_heal]) unless allies[ally_to_heal].die?
     else
       puts "Your allies already dead!"
     end
   end
 
-  def self.attack(hero, villains)
+  def choose_attack(villains)
     puts "Which enemy you want to attack?"  
     villains.each_with_index do |villain, index|
       puts "#{index + 1}) #{villain.name}"
@@ -47,13 +42,6 @@ class Hero < Player
     enemy_to_attack = gets.chomp.to_i - 1
     puts
 
-    case enemy_to_attack
-    when 0
-      hero.attack(villains[enemy_to_attack])
-    when 1
-      hero.attack(villains[enemy_to_attack])
-    when 2
-      hero.attack(villains[enemy_to_attack])
-    end
+    self.attack(villains[enemy_to_attack]) unless villains.empty?
   end
 end
