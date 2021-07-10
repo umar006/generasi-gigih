@@ -9,7 +9,7 @@ class Villain < Player
 
   def take_damage(damage)
     super(damage)
-    if @hitpoint <= 50 
+    if @hitpoint.between? 1,50
       flee if rand < @flee_percentage
     end
   end
