@@ -1,0 +1,11 @@
+<form action="/items" method="POST">
+    <label for="item_name">Nama items:</label>
+    <input type="text" id="item_name" name="item_name"><br>
+    <input type="submit" value="Submit">
+</form>
+
+<ol>
+  <% items.each do |item| %>
+    <li><%=item%></li>
+  <% end %>
+</ol>

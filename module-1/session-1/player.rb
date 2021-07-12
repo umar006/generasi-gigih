@@ -1,11 +1,11 @@
 class Player
   attr_reader :name
 
-  def initialize(name, hitpoint, att_dmg, can_deflect=false)
+  def initialize(name, hitpoint, att_dmg, deflect=0)
     @name = name
     @hitpoint = hitpoint
     @att_dmg = att_dmg
-    @can_deflect = can_deflect
+    @deflect = deflect
   end
 
   def attack(other_player)
@@ -14,8 +14,8 @@ class Player
   end
 
   def take_damage(damage)
-    is_deflect = Random.new.rand(1..10) <= 8
-    if @can_deflect && is_deflect
+    is_deflect = Random.new.rand(1..10) <= @deflect
+    if @deflect > 0 && is_deflect
       puts "#{@name} deflect the attack"
       return
     end

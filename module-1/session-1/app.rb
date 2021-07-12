@@ -1,6 +1,6 @@
 require_relative 'player'
 
-jin_sakai = Player.new("Jin Sakai", 100, 50, true)
+jin_sakai = Player.new("Jin Sakai", 100, 50, 8)
 khotun_khan = Player.new("Khotun Khan", 500, 50)
 puts jin_sakai
 puts khotun_khan
