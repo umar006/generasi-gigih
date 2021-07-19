@@ -1,7 +1,15 @@
 # Generasi Gigih 2021
 Homework
 
-**session-1** -> abstraction, encapsulation  
-**session-2** -> inheritance, polymorphism  
-**session-3** -> composition  
-
+**Module-1**  
+|-**session-1** -> abstraction and encapsulation  
+|-**session-2** -> inheritance and polymorphism  
+|-**session-3** -> composition  
+  
+**Module-2**  
+|-**session-1** -> http method, routing, and rendering  
+|-**session-2** -> entity relationship diagram and data description language  
+|-**session-3** -> data manipulation language  
+  
+**Module-3**  
+|-**session-1** -> database connection
