@@ -1,6 +1,10 @@
 require 'sinatra'
 require './db_connector'
-require './controller/item_controller'
+require './app/controller/items_controller'
+
+configure do
+  set :views, 'app/views'
+end
 
 get '/' do
   @items = get_all_item_with_categories

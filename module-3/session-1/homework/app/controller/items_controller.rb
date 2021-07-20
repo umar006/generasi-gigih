@@ -1,6 +1,6 @@
-require_relative '../db_connector'
-require_relative '../model/category'
-require_relative '../model/item'
+require './db_connector'
+require './app/model/category'
+require './app/model/item'
 
 def get_all_items
   client = create_db_client
