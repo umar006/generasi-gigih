@@ -27,7 +27,7 @@ end
 
 get '/items/:id' do
   id = params['id'].to_i
-  @items = get_detail_item(id)
+  @item = get_detail_item(id)
   erb :show
 end
 

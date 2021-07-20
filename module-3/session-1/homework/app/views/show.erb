@@ -1,7 +1,5 @@
 <h1>Item Detail</h1>
 
-<% @items.each do |item| %>
-    <p>Item name: <%= item.name %></p>
-    <p>Item price: <%= item.price %></p>
-    <p>Item category: <%= item.category.name %></p>
-<% end %>
+<p>Item name: <%= @item.name %></p>
+<p>Item price: <%= @item.price %></p>
+<p>Item category: <%= @item.category.name %></p>

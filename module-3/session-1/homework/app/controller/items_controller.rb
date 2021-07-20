@@ -73,23 +73,18 @@ end
 
 def get_detail_item(id)
   client = create_db_client
-  rawData = client.query("
+  data = client.query("
       select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
       from item_categories
       join items on items.id = item_categories.item_id
       join categories on categories.id = item_categories.category_id
       where items.id = #{id}
-    ")
+    ").each.first
 
-  items = Array.new
+  category = Category.new(data['category_name'], data['category_id'])
+  item = Item.new(data['name'], data['price'], data['id'], category)
 
-  rawData.each do |data|
-    category = Category.new(data['category_name'], data['category_id'])
-    item = Item.new(data['name'], data['price'], data['id'], category)
-    items.push(item)
-  end
-
-  items
+  item
 end
 
 def update_item(item_id, name, price, category)
