@@ -33,7 +33,7 @@ end
 
 get '/items/:id/edit' do
   id = params['id']
-  @items = get_detail_item(id)
+  @item = get_detail_item(id)
   @categories = get_all_categories
   
   erb :edit

@@ -1,14 +1,13 @@
 <body>
-<% @items.each do |item| %>
-   <h1>Edit <%= item.name %></h1>
+   <h1>Edit <%= @item.name %></h1>
 
-   <form method="POST" action="/items/<%=item.id%>/update">
-      <input name="name" type="text" value="<%= item.name %>"> 
-      <input name="price" type="text" value="<%= item.price %>"> 
+   <form method="POST" action="/items/<%=@item.id%>/update">
+      <input name="name" type="text" value="<%= @item.name %>"> 
+      <input name="price" type="text" value="<%= @item.price %>"> 
 
       <select name="categories" id="categories">
          <% @categories.each do |category| %>
-            <% if category.name == item.category.name %>
+            <% if category.name == @item.category.name %>
                <option name="category" selected="selected"><%= category.name %></option>
             <% else %>
                <option name="category"><%= category.name %></option>
@@ -18,5 +17,4 @@
 
       <button type="submit">Update item</button>
    </form>
-<% end %>
 </body>
