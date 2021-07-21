@@ -1,20 +1,3 @@
-require './db_connector'
-require './app/model/category'
-require './app/model/item'
-
-def get_all_items
-  client = create_db_client
-  rawData = client.query("select * from items")
-
-  items = Array.new
-  rawData.each do |data|
-    item = Item.new(data['name'], data['price'], data['id'])
-    items.push(item)
-  end
-
-  items
-end
-
 def get_all_categories
   client = create_db_client
   rawData = client.query("select * from categories")
