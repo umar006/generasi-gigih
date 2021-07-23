@@ -1,0 +1,29 @@
+<a href="/">Back</a>
+<h1>Categories</h1>
+
+<table>
+   <thead>
+      <th>Id</th>
+      <th>Name</th>
+   </thead>
+   <tbody>
+      <% @categories.each do |category| %>
+         <tr>
+            <td><%= category.id %></td>
+            <td><%= category.name %></td>
+            <td>
+               <a href="<%= url("/categories/#{category.id}") %>">Show</a>
+            </td>
+            <td>
+               <a href="<%= url("/categories/#{category.id}/edit") %>">Edit</a>
+            </td>
+            <td>
+               <form action="/categories/<%=category.id%>/destroy" method="post">
+                  <input type="submit" value="Delete">
+               </form>
+            </td>
+         </tr>
+      <% end %>
+   </tbody>
+</table>
+<a href="/categories/new">Add new category</a>
