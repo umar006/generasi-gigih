@@ -1,3 +1,6 @@
+require 'erb'
+require './app/models/item'
+
 def get_all_categories
   client = create_db_client
   rawData = client.query("select * from categories")

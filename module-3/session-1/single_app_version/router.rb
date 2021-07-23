@@ -1,8 +1,8 @@
 require 'sinatra'
-require './db_connector'
-require './app/model/item'
-require './app/model/category'
-require './app/controller/items_controller'
+require './db/db_connector'
+require './app/models/item'
+require './app/models/category'
+require './app/controllers/items_controller'
 
 configure do
   set :views, 'app/views'
