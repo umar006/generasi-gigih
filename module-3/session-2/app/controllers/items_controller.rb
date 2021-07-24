@@ -6,12 +6,12 @@ class ItemsController < Application
 
   get '/' do
     @items = Item::all_with_categories
-    erb :index
+    erb :'items/index'
   end
 
   get '/items/new' do
     @categories = Category::all
-    erb :create
+    erb :'items/create'
   end
 
   post '/items/create' do
@@ -21,14 +21,14 @@ class ItemsController < Application
 
   get '/items/:id' do
     @item = Item::show(params['id'])
-    erb :show
+    erb :'items/show'
   end
 
   get '/items/:id/edit' do
     @item = Item::show(params['id'])
     @categories = Category::all
     
-    erb :edit
+    erb :'items/edit'
   end
 
   post '/items/:id/update' do

@@ -8,27 +8,6 @@ class Item
     @category = category
   end
 
-  def self.all_with_categories
-    client = create_db_client
-    rawData = client.query("
-        select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
-        from item_categories
-        left join items on items.id = item_categories.item_id
-        left join categories on categories.id = item_categories.category_id;
-      ")
-
-    items = Array.new
-
-    rawData.each do | data |
-      category = Category.new(data['category_name'], data['category_id'])
-      item = Item.new(data['name'], data['price'], data['id'], category)
-
-      items.push(item)
-    end
-
-    items
-  end
-
   def self.add(name, price, category)
     client = create_db_client
     client.query("
@@ -49,22 +28,6 @@ class Item
     client.query("
         insert into item_categories values ('#{item_id}', '#{category_id}');
       ")
-  end
-
-  def self.show(id)
-    client = create_db_client
-    data = client.query("
-        select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
-        from item_categories
-        join items on items.id = item_categories.item_id
-        join categories on categories.id = item_categories.category_id
-        where items.id = #{id}
-      ").each.first
-
-    category = Category.new(data['category_name'], data['category_id'])
-    item = Item.new(data['name'], data['price'], data['id'], category)
-
-    item
   end
 
   def self.update(item_id, name, price, category)
@@ -99,4 +62,42 @@ class Item
         where item_id='#{item_id}';
       ")
   end
+
+  def self.all_with_categories
+    client = create_db_client
+    rawData = client.query("
+        select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
+        from item_categories
+        left join items on items.id = item_categories.item_id
+        left join categories on categories.id = item_categories.category_id;
+      ")
+
+    items = Array.new
+
+    rawData.each do | data |
+      category = Category.new(data['category_name'], data['category_id'])
+      item = Item.new(data['name'], data['price'], data['id'], category)
+
+      items.push(item)
+    end
+
+    items
+  end
+
+  def self.show(id)
+    client = create_db_client
+    data = client.query("
+        select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
+        from item_categories
+        join items on items.id = item_categories.item_id
+        join categories on categories.id = item_categories.category_id
+        where items.id = #{id}
+      ").each.first
+
+    category = Category.new(data['category_name'], data['category_id'])
+    item = Item.new(data['name'], data['price'], data['id'], category)
+
+    item
+  end
+
 end
