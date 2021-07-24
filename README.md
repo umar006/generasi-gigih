@@ -12,4 +12,6 @@ Homework
 |-**session-3** -> data manipulation language  
   
 **Module-3**  
-|-**session-1** -> database connection
+|-**session-1** -> database connection  
+|-**session-2** -> mvc architecture part 1  
+|-**session-3** -> mvc acrchitecture part 2  
