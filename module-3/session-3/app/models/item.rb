@@ -1,11 +1,66 @@
 class Item
   attr_accessor :name, :price, :id, :category
 
-  def initialize(name, price, id, category=nil)
-    @name = name
-    @price = price
-    @id = id
+  def initialize(params, category=nil)
+    @id = params[:id]
+    @name = params[:name]
+    @price = params[:price]
     @category = category
+  end
+
+  def save
+    client = create_db_client
+    client.query("
+        insert into items (name, price) values ('#{@name}', '#{@price}');
+      ")
+    
+    item_id = client.query("
+        select id
+        from items
+        where name='#{@name}' and price='#{@price}'
+      ").each.first["id"]
+    category_id = client.query("
+        select id
+        from categories
+        where name='#{@category.name}'
+      ").each.first["id"]
+    
+    client.query("
+        insert into item_categories values ('#{item_id}', '#{category_id}');
+      ")
+  end
+
+  def update
+    client = create_db_client
+    client.query("
+        update items
+        set name='#{@name}', price='#{@price}'
+        where id='#{@id}';
+      ")
+
+    category_id = client.query("
+        select id
+        from categories
+        where name='#{@category.name}'
+      ").each.first["id"]
+
+    client.query("
+        update item_categories
+        set category_id='#{category_id}'
+        where item_id='#{@id}';
+      ")
+  end
+
+  def delete
+    client = create_db_client
+    client.query("
+        delete from items
+        where id='#{@id}'
+      ")
+    client.query("
+        delete from item_categories
+        where item_id='#{@id}';
+      ")
   end
 
   def self.all_with_categories
@@ -20,35 +75,14 @@ class Item
     items = Array.new
 
     rawData.each do | data |
-      category = Category.new(data['category_name'], data['category_id'])
-      item = Item.new(data['name'], data['price'], data['id'], category)
+      data.transform_keys!(&:to_sym)
+      category = Category.new(data)
+      item = Item.new(data, category)
 
       items.push(item)
     end
 
     items
-  end
-
-  def self.add(name, price, category)
-    client = create_db_client
-    client.query("
-        insert into items (name, price) values ('#{name}', '#{price}');
-      ")
-    
-    item_id = client.query("
-        select id
-        from items
-        where name='#{name}' and price='#{price}'
-      ").each.first["id"]
-    category_id = client.query("
-        select id
-        from categories
-        where name='#{category}'
-      ").each.first["id"]
-    
-    client.query("
-        insert into item_categories values ('#{item_id}', '#{category_id}');
-      ")
   end
 
   def self.find_by_id(id)
@@ -61,42 +95,30 @@ class Item
         where items.id = #{id}
       ").each.first
 
-    category = Category.new(data['category_name'], data['category_id'])
-    item = Item.new(data['name'], data['price'], data['id'], category)
+    data.transform_keys!(&:to_sym)
+    category = Category.new(data)
+    item = Item.new(data, category)
 
     item
   end
 
-  def self.update(item_id, name, price, category)
+  def self.where(category_id)
     client = create_db_client
-    client.query("
-        update items
-        set name='#{name}', price='#{price}'
-        where id='#{item_id}';
+    rawData = client.query("
+        select items.name, items.price, items.id
+        from item_categories
+        join items on items.id = item_categories.item_id
+        left join categories on categories.id = item_categories.category_id
+        where categories.id = #{category_id};
       ")
+    
+    items = Array.new
+    rawData.each do |data|
+      data.transform_keys!(&:to_sym)
+      item = Item.new(data)
+      items << item
+    end
 
-    category_id = client.query("
-        select id
-        from categories
-        where name='#{category}'
-      ").each.first["id"]
-
-    client.query("
-        update item_categories
-        set category_id='#{category_id}'
-        where item_id='#{item_id}';
-      ")
-  end
-
-  def self.delete(item_id)
-    client = create_db_client
-    client.query("
-        delete from items
-        where id='#{item_id}'
-      ")
-    client.query("
-        delete from item_categories
-        where item_id='#{item_id}';
-      ")
+    items
   end
 end

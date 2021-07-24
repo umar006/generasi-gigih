@@ -2,6 +2,7 @@ require 'sinatra/base'
 require_relative '../models/item'
 require_relative '../models/category'
 require_relative './items_controller'
+require_relative './categories_controller'
 
 class Application < Sinatra::Base
   configure do
@@ -20,7 +21,11 @@ class Application < Sinatra::Base
   end
 
   post '/items/create' do
-    Item::add(params['name'], params['price'], params['categories'])
+    ItemsController::create_item({
+      name: params['name'],
+      price: params['price'],
+      category_name: params['categories']
+    })
     redirect '/'
   end
 
@@ -37,12 +42,17 @@ class Application < Sinatra::Base
   end
 
   post '/items/:id/update' do
-    Item::update(params['id'], params['name'], params['price'], params['categories'])
+    ItemsController::update_item({
+      id: params['id'],
+      name: params['name'],
+      price: params['price'],
+      category_name: params['categories']
+    })
     redirect '/'
   end
 
   post '/items/:id/destroy' do
-    Item::delete(params['id'])
+    ItemsController::delete_item({id: params['id']})
     redirect '/'
   end
 
@@ -57,13 +67,15 @@ class Application < Sinatra::Base
   end
 
   post '/categories/create' do
-    Category::add(params['name'])
+    CategoriesController::create_category({
+      category_name: params['name']
+    })
     redirect '/categories'
   end
 
   get '/categories/:id' do
     @category = Category::find_by_id(params['id'])
-    @items = Category::items_by_category(params['id'])
+    @items = Item::where(params['id'])
     erb :'categories/show'
   end
 
@@ -73,12 +85,17 @@ class Application < Sinatra::Base
   end
 
   post '/categories/:id/update' do
-    Category::update(params['id'], params['name'])
+    CategoriesController::update_category({
+      category_id: params['id'],
+      category_name: params['name']
+    })
     redirect '/categories'
   end
 
   post '/categories/:id/destroy' do
-    Category::delete(params['id'])
+    CategoriesController::delete_category({
+      category_id: params['id']
+    })
     redirect '/categories'
   end
 end

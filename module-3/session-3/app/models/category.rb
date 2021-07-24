@@ -1,82 +1,69 @@
 class Category
   attr_accessor :name, :id
 
-  def initialize(name, id=nil)
-    @name = name
-    @id = id
+  def initialize(params)
+    @name = params[:category_name]
+    @id = params[:category_id]
+    p params
   end
 
-  def self.add(name)
+  def save
     client = create_db_client
     client.query("
-        insert into categories (name) values ('#{name}');
+        insert into categories (name) values ('#{@name}');
       ")
   end
 
-  def self.update(id, name)
+  def update
     client = create_db_client
     client.query("
       update categories
-      set name='#{name}'
-      where id='#{id}';
+      set name='#{@name}'
+      where id='#{@id}';
       ")
   end
 
-  def self.delete(id)
+  def delete
     client = create_db_client
     client.query("
         delete from categories
-        where id='#{id}';
+        where id='#{@id}';
       ")
     client.query("
         update item_categories
         set category_id=null
-        where category_id='#{id}'
+        where category_id='#{@id}'
       ")
   end
 
   def self.all
     client = create_db_client
-    rawData = client.query("select * from categories")
+    rawData = client.query("
+        select categories.id as 'category_id', categories.name as 'category_name'
+        from categories
+      ")
 
     categories = Array.new
     rawData.each do |data|
-      category = Category.new(data['name'], data['id'])
+      data.transform_keys!(&:to_sym)
+      category = Category.new(data)
       categories << category
     end
 
     categories
   end
 
-  def self.items_by_category(category_id)
-    client = create_db_client
-    rawData = client.query("
-        select items.name, items.price, items.id
-        from item_categories
-        join items on items.id = item_categories.item_id
-        join categories on categories.id = item_categories.category_id
-        where categories.id = #{category_id};
-      ")
-    
-    items = Array.new
-    rawData.each do |data|
-      item = Item.new(data['name'], data['price'], data['id'])
-      items << item
-    end
-
-    items
-  end
-
   def self.find_by_id(id)
     client = create_db_client
 
     data = client.query("
-        select categories.name, categories.id
+        select categories.id as 'category_id', categories.name as 'category_name'
         from categories
         where categories.id = #{id};
       ").each.first
     
-    category = Category.new(data['name'], data['id'])
+    data.transform_keys!(&:to_sym)
+    category = Category.new(data)
 
     category
   end
