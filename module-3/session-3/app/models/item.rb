@@ -72,34 +72,20 @@ class Item
         left join categories on categories.id = item_categories.category_id;
       ")
 
-    items = Array.new
-
-    rawData.each do | data |
-      data.transform_keys!(&:to_sym)
-      category = Category.new(data)
-      item = Item.new(data, category)
-
-      items.push(item)
-    end
-
-    items
+    convert_sql_to_array(rawData)
   end
 
   def self.find_by_id(id)
     client = create_db_client
-    data = client.query("
+    rawData = client.query("
         select items.id, items.name, items.price, categories.name as 'category_name', categories.id as 'category_id'
         from item_categories
         join items on items.id = item_categories.item_id
         left join categories on categories.id = item_categories.category_id
         where items.id = #{id}
-      ").each.first
+      ")
 
-    data.transform_keys!(&:to_sym)
-    category = Category.new(data)
-    item = Item.new(data, category)
-
-    item
+    convert_sql_to_array(rawData)
   end
 
   def self.where(category_id)
@@ -112,13 +98,17 @@ class Item
         where categories.id = #{category_id};
       ")
     
+    convert_sql_to_array(rawData)
+  end
+
+  def self.convert_sql_to_array(rawData)
     items = Array.new
     rawData.each do |data|
       data.transform_keys!(&:to_sym)
-      item = Item.new(data)
+      category = Category.new(data)
+      item = Item.new(data, category)
       items << item
     end
-
     items
   end
 end

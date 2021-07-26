@@ -5,7 +5,7 @@
    <input name="name" type="text" placeholder="Item name">
    <input name="price" type="text" placeholder="Item price">
 
-   <select name="categories" id="categories">
+   <select name="category_name" id="categories">
       <% @categories.each do |category| %>
          <option name="category" value="<%= category.name %>"><%= category.name %></option>
       <% end %>

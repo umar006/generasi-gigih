@@ -21,38 +21,29 @@ class Application < Sinatra::Base
   end
 
   post '/items/create' do
-    ItemsController::create_item({
-      name: params['name'],
-      price: params['price'],
-      category_name: params['categories']
-    })
+    ItemsController::create_item(params)
     redirect '/'
   end
 
   get '/items/:id' do
-    @item = Item::find_by_id(params['id'])
+    @item = Item::find_by_id(params['id']).first
     erb :'items/show'
   end
 
   get '/items/:id/edit' do
-    @item = Item::find_by_id(params['id'])
+    @item = Item::find_by_id(params['id']).first
     @categories = Category::all
     
     erb :'items/edit'
   end
 
   post '/items/:id/update' do
-    ItemsController::update_item({
-      id: params['id'],
-      name: params['name'],
-      price: params['price'],
-      category_name: params['categories']
-    })
+    ItemsController::update_item(params)
     redirect '/'
   end
 
   post '/items/:id/destroy' do
-    ItemsController::delete_item({id: params['id']})
+    ItemsController::delete_item(params)
     redirect '/'
   end
 
@@ -74,13 +65,13 @@ class Application < Sinatra::Base
   end
 
   get '/categories/:id' do
-    @category = Category::find_by_id(params['id'])
+    @category = Category::find_by_id(params['id']).first
     @items = Item::where(params['id'])
     erb :'categories/show'
   end
 
   get '/categories/:id/edit' do
-    @category = Category::find_by_id(params['id'])
+    @category = Category::find_by_id(params['id']).first
     erb :'categories/edit'
   end
 

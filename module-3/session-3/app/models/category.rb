@@ -4,7 +4,6 @@ class Category
   def initialize(params)
     @name = params[:category_name]
     @id = params[:category_id]
-    p params
   end
 
   def save
@@ -43,28 +42,28 @@ class Category
         from categories
       ")
 
+    convert_sql_to_array(rawData)
+  end
+
+  def self.find_by_id(id)
+    client = create_db_client
+
+    rawData = client.query("
+        select categories.id as 'category_id', categories.name as 'category_name'
+        from categories
+        where categories.id = #{id};
+      ")
+    
+    convert_sql_to_array(rawData)
+  end
+
+  def self.convert_sql_to_array(rawData)
     categories = Array.new
     rawData.each do |data|
       data.transform_keys!(&:to_sym)
       category = Category.new(data)
       categories << category
     end
-
     categories
-  end
-
-  def self.find_by_id(id)
-    client = create_db_client
-
-    data = client.query("
-        select categories.id as 'category_id', categories.name as 'category_name'
-        from categories
-        where categories.id = #{id};
-      ").each.first
-    
-    data.transform_keys!(&:to_sym)
-    category = Category.new(data)
-
-    category
   end
 end
