@@ -1,0 +1,36 @@
+<a href="/">Back</a>
+<h1>Orders</h1>
+
+<table>
+   <thead>
+      <th>Customer Id</th>
+      <th>Order Date</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Total</th>
+      <th>Items</th>
+   </thead>
+   <tbody>
+      <% @orders.each do |order| %>
+         <tr>
+            <td><%= order.customer.id %></td>
+            <td><%= order.order_date %></td>
+            <td><%= order.customer.name %></td>
+            <td><%= order.customer.phone %></td>
+            <td><%= order.total %></td>
+            <td><%= order.items %></td>
+            <td>
+               <a href="/orders/<%= order.id %>">Show</a>
+            </td>
+            <td>
+               <a href="/orders/<%= order.id %>/edit">Edit</a>
+            </td>
+            <td>
+               <form action="/orders/<%= order.id %>/destroy" method="post">
+                  <input type="submit" value="Delete">
+               </form>
+            </td>
+         </tr>
+      <% end %>
+   </tbody>
+</table>

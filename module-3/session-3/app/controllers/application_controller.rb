@@ -1,16 +1,24 @@
 require 'sinatra/base'
 require_relative '../models/item'
 require_relative '../models/category'
+require_relative '../models/customer'
+require_relative '../models/order'
 require_relative './items_controller'
 require_relative './categories_controller'
+require_relative './customers_controller'
+require_relative './orders_controller'
 
 class Application < Sinatra::Base
   configure do
     set :views, 'app/views'
   end
 
-  # Items
   get '/' do
+    erb :'home'
+  end
+
+  # Items
+  get '/items' do
     @items = Item::all_with_categories
     erb :'items/index'
   end
@@ -88,5 +96,17 @@ class Application < Sinatra::Base
       category_id: params['id']
     })
     redirect '/categories'
+  end
+
+  # Customers
+  get '/customers' do
+    @customers = Customer::all
+    erb :'customers/index'
+  end
+
+  # Orders
+  get '/orders' do
+    @orders = Order::all
+    erb :'orders/index'
   end
 end
