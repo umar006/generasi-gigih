@@ -29,7 +29,7 @@ describe Category do
     end
 
     context "given invalid input" do
-      it "should return false" do
+      it "should return false when category_name is nil" do
         expect(@category_invalid.save).to eq(false)
       end
     end
@@ -45,6 +45,12 @@ describe Category do
           ".gsub(/\s+/, " "))
   
           @category.update
+      end
+    end
+
+    context "given invalid input" do
+      it "should return false when category_name is nil" do
+        expect(@category_invalid.update).to eq(false)
       end
     end
   end
