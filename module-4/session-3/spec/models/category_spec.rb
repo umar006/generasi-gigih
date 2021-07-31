@@ -8,6 +8,11 @@ describe Category do
       category_name: 'candy'
     })
 
+    @category_invalid = Category.new({
+      category_id: 6,
+      category_name: nil
+    })
+
     @dummy_database = double
     allow(Mysql2::Client).to receive(:new).and_return(@dummy_database)
   end
@@ -20,6 +25,12 @@ describe Category do
           ".gsub(/\s+/, " "))
         
           @category.save
+      end
+    end
+
+    context "given invalid input" do
+      it "should return false" do
+        expect(@category_invalid.save).to eq(false)
       end
     end
   end
@@ -37,7 +48,6 @@ describe Category do
       end
     end
   end
-
 
   describe "#delete" do
     context "given valid input" do
