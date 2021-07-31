@@ -1,0 +1,8 @@
+<a href="/categories">Back</a>
+<h1>Edit <%= @category.name %></h1>
+
+<form method="POST" action="/categories/<%= @category.id %>/update">
+   <input name="name" type="text" value="<%= @category.name %>"> 
+
+   <button type="submit">Update item</button>
+</form>

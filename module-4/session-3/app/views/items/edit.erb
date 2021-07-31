@@ -1,0 +1,19 @@
+<a href="/items">Back</a>
+<h1>Edit <%= @item.name %></h1>
+
+<form method="POST" action="/items/<%= @item.id %>/update">
+   <input name="name" type="text" value="<%= @item.name %>"> 
+   <input name="price" type="text" value="<%= @item.price %>"> 
+
+   <select name="category_name" id="categories">
+      <% @categories.each do |category| %>
+         <% if category.name == @item.category.name %>
+            <option name="category" selected="selected"><%= category.name %></option>
+         <% else %>
+            <option name="category"><%= category.name %></option>
+         <% end %>
+      <% end %>
+   </select>
+
+   <button type="submit">Update item</button>
+</form>

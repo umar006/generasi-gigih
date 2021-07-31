@@ -1,0 +1,30 @@
+<a href="/">Back</a>
+<h1>Customers</h1>
+
+<table>
+   <thead>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Phone</th>
+   </thead>
+   <tbody>
+      <% @customers.each do |customer| %>
+         <tr>
+            <td><%= customer.id %></td>
+            <td><%= customer.name %></td>
+            <td><%= customer.phone %></td>
+            <td>
+               <a href="/customers/<%= customer.id %>">Show</a>
+            </td>
+            <td>
+               <a href="/customers/<%= customer.id %>/edit">Edit</a>
+            </td>
+            <td>
+               <form action="/customers/<%= customer.id %>/destroy" method="post">
+                  <input type="submit" value="Delete">
+               </form>
+            </td>
+         </tr>
+      <% end %>
+   </tbody>
+</table>
