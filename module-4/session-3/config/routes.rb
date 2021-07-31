@@ -30,7 +30,7 @@ class Application < Sinatra::Base
 
   post '/items/create' do
     ItemsController::create_item(params)
-    redirect '/'
+    redirect '/items'
   end
 
   get '/items/:id' do
@@ -47,12 +47,12 @@ class Application < Sinatra::Base
 
   post '/items/:id/update' do
     ItemsController::update_item(params)
-    redirect '/'
+    redirect '/items'
   end
 
   post '/items/:id/destroy' do
     ItemsController::delete_item(params)
-    redirect '/'
+    redirect '/items'
   end
 
   # Categories
