@@ -10,7 +10,7 @@ class Category
     client = create_db_client
     client.query("
         insert into categories (name) values ('#{@name}');
-      ")
+      ".gsub(/\s+/, " "))
   end
 
   def update
@@ -19,7 +19,7 @@ class Category
       update categories
       set name='#{@name}'
       where id='#{@id}';
-      ")
+      ".gsub(/\s+/, " "))
   end
 
   def delete
@@ -27,12 +27,12 @@ class Category
     client.query("
         delete from categories
         where id='#{@id}';
-      ")
+      ".gsub(/\s+/, " "))
     client.query("
         update item_categories
         set category_id=null
         where category_id='#{@id}'
-      ")
+      ".gsub(/\s+/, " "))
   end
 
   def self.all

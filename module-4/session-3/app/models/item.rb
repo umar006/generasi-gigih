@@ -9,23 +9,27 @@ class Item
   end
 
   def save
-    client = create_db_client
-    client.query("insert into items (name, price) values ('#{@name}', '#{@price}');")
+    return false unless valid?
     
+    client = create_db_client
+    client.query("
+        insert into items (name, price) values ('#{@name}', '#{@price}');
+      ".gsub(/\s+/, " "))
+      
     item_id = client.query("
         select id
         from items
         where name='#{@name}' and price='#{@price}'
-      ").each.first["id"]
+      ".gsub(/\s+/, " ")).each.first["id"]
     category_id = client.query("
         select id
         from categories
         where name='#{@category.name}'
-      ").each.first["id"]
+      ".gsub(/\s+/, " ")).each.first["id"]
     
     client.query("
         insert into item_categories values ('#{item_id}', '#{category_id}');
-      ")
+      ".gsub(/\s+/, " "))
   end
 
   def update
@@ -59,6 +63,11 @@ class Item
         delete from item_categories
         where item_id='#{@id}';
       ")
+  end
+
+  def valid?
+    return false if @name.nil? || @price.nil?
+    true
   end
 
   def self.all_with_categories
