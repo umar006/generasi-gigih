@@ -37,4 +37,23 @@ describe Category do
       end
     end
   end
+
+
+  describe "#delete" do
+    context "given valid input" do
+      it "should delete the category" do
+        expect(@dummy_database).to receive(:query).with("
+            delete from categories
+            where id='#{@category.id}';
+          ".gsub(/\s+/, " "))
+        expect(@dummy_database).to receive(:query).with("
+            update item_categories
+            set category_id=null
+            where category_id='#{@category.id}'
+          ".gsub(/\s+/, " "))
+  
+          @category.delete
+      end
+    end
+  end
 end
