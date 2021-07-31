@@ -71,5 +71,11 @@ describe Category do
           @category.delete
       end
     end
+
+    context "given invalid input" do
+      it "should return false when category_name is nil" do
+        expect(@category_invalid.delete).to eq(false)
+      end
+    end
   end
 end
