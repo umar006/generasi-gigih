@@ -30,6 +30,8 @@ class Item
     client.query("
         insert into item_categories values ('#{item_id}', '#{category_id}');
       ".gsub(/\s+/, " "))
+    
+      true
   end
 
   def update
