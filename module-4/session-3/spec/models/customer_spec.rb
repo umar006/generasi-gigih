@@ -30,8 +30,22 @@ describe Customer do
     end
 
     context 'given invalid input' do
-      it 'should return false when given invalid input' do
+      it 'should return false when given name and phone = nil' do
         expect(@customer_invalid.save).to eq(false)
+      end
+    end
+  end
+
+  describe '#update' do
+    context 'given valid input' do
+      it 'should update the customer' do
+        expect(@dummy_database).to receive(:query).with("
+            update customers
+            set name='#{@customer_valid.name}', phone='#{@customer_valid.phone}'
+            where id='#{@customer_valid.id}';
+          ".gsub(/\s+/, ' '))
+
+        @customer_valid.update
       end
     end
   end
