@@ -28,5 +28,11 @@ describe Customer do
         @customer_valid.save
       end
     end
+
+    context 'given invalid input' do
+      it 'should return false when given invalid input' do
+        expect(@customer_invalid.save).to eq(false)
+      end
+    end
   end
 end
