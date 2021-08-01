@@ -55,4 +55,17 @@ describe Customer do
       end
     end
   end
+
+  describe '#delete' do
+    context 'given valid input' do
+      it 'should delete the customer' do
+        expect(@dummy_database).to receive(:query).with("
+            delete from customers
+            where id='#{@customer_valid.id}';
+          ".gsub(/\s+/, ' '))
+
+        @customer_valid.delete
+      end
+    end
+  end
 end
