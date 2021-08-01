@@ -30,7 +30,7 @@ describe Customer do
     end
 
     context 'given invalid input' do
-      it 'should return false when given name and phone = nil' do
+      it 'should return false when name and phone = nil' do
         expect(@customer_invalid.save).to eq(false)
       end
     end
@@ -46,6 +46,12 @@ describe Customer do
           ".gsub(/\s+/, ' '))
 
         @customer_valid.update
+      end
+    end
+
+    context 'given invalid input' do
+      it 'should return false when name and phone = nil' do
+        expect(@customer_invalid.update).to eq(false)
       end
     end
   end
