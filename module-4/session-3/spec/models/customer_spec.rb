@@ -67,5 +67,11 @@ describe Customer do
         @customer_valid.delete
       end
     end
+
+    context 'given invalid input' do
+      it 'should return false when name and phone = nil' do
+        expect(@customer_invalid.delete).to eq(false)
+      end
+    end
   end
 end
