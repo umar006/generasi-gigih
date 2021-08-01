@@ -7,22 +7,32 @@ class Category
   end
 
   def save
+    return false unless valid?
+
     client = create_db_client
     client.query("
         insert into categories (name) values ('#{@name}');
       ".gsub(/\s+/, " "))
+
+      true
   end
 
   def update
+    return false unless valid?
+
     client = create_db_client
     client.query("
       update categories
       set name='#{@name}'
       where id='#{@id}';
       ".gsub(/\s+/, " "))
+
+      true
   end
 
   def delete
+    return false unless valid?
+
     client = create_db_client
     client.query("
         delete from categories
@@ -33,6 +43,13 @@ class Category
         set category_id=null
         where category_id='#{@id}'
       ".gsub(/\s+/, " "))
+
+      true
+  end
+
+  def valid?
+    return false if @name.nil?
+    true
   end
 
   def self.all
