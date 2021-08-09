@@ -1,10 +1,16 @@
 language: python
+
 python:
 - '2.7'
+
 branches:
   only:
   - main
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_e40e4a5bbb25_key -iv $encrypted_e40e4a5bbb25_iv
   -in id_ed25519.pub.enc -out ~\/.ssh/id_ed25519.pub -d
 - chmod 400 ~/.ssh/id_ed25519.pub
+
+install:
+   - pip install ansible
